@@ -1,0 +1,96 @@
+//IZennoTable tblWhatChanged = project.Tables["What_changed"];
+//IZennoTable tblStandart = project.Tables["Standart"];
+IZennoTable tblStandartNumber = project.Tables["StandartNumber"];
+//
+//
+//
+//
+IZennoList lstTelegramUserID = project.Lists["TelegramUserID"];
+IZennoList lstBroukenListing = project.Lists["BroukenListing"];
+lstBroukenListing.Clear();
+
+List<string> listAsinsTemp = new List<string>();
+
+string strAsin = "";
+string strStandartNumber = "";
+string strMessage = "";
+string strFormat = "";
+
+
+string strProfilePath = project.Directory + @"\Вспомогательные файлы\amazon_profile.zpprofile";
+//project.Profile.Save(strProfilePath);
+
+Tab Tab1 = instance.ActiveTab;
+
+
+for(int i=0; i<tblStandartNumber.RowCount; i++){
+	strAsin = tblStandartNumber.GetCell(0, i);
+	project.SendInfoToLog(strAsin);
+	strStandartNumber = tblStandartNumber.GetCell(1, i);
+	int intstrStandartNumber = Convert.ToInt32(strStandartNumber);
+	
+
+	//загружаем профиль
+	if (File.Exists(strProfilePath)){
+		project.Profile.Load(strProfilePath);
+	}
+	else{
+		Tab1.Navigate("https://sellercentral.amazon.com/listing/varwiz?ref=ag_varwiz_xx_invmgr");
+		Tab1.WaitDownloading();
+		Thread.Sleep(500);
+		Thread.Sleep(200000);
+		project.Profile.Save(strProfilePath);
+	}
+
+	//переходим на страницу
+	Tab1.Navigate("https://sellercentral.amazon.com/listing/varwiz?ref=ag_varwiz_xx_invmgr");
+	Tab1.WaitDownloading();
+	Thread.Sleep(500);
+
+	//выбираем действие
+	HtmlElement elAddTo = Tab1.FindElementByXPath("//div[@id='varwizard_accordion']//a/i", 0);
+	elAddTo.Click();
+	Tab1.WaitDownloading();
+	Thread.Sleep(1000);
+	
+	 strAsin = "B07CZPV9FB";
+	//вставляем Асин
+	HtmlElement elInput = Tab1.FindElementByXPath("//input[@name='query']", 0);
+	elInput.SetValue(strAsin, "Full");
+	Tab1.WaitDownloading();
+	Thread.Sleep(500);
+	
+	//нажимаем Поиск
+	HtmlElement elSearch = Tab1.FindElementByXPath("//span[@id='a-autoid-0']//input[@class='a-button-input']", 0);
+	elSearch.Click();
+	Tab1.WaitDownloading();
+	Thread.Sleep(2000);
+
+	//собираем количество АСИНов
+	HtmlElementCollection colAsins = Tab1.FindElementsByXPath("//td[contains(@id,'asin')]");
+	foreach(HtmlElement elAsin in colAsins){
+		string strAsinTemp = elAsin.GetAttribute("innerHtml");
+		listAsinsTemp.Add(strAsinTemp);
+		project.SendInfoToLog(strAsinTemp);
+	}
+
+	//если количество асинов не соответствует обычному количеству
+	if(listAsinsTemp.Count!=intstrStandartNumber){
+		//добавляем асин в список поломаных аcинов
+		lstBroukenListing.Add(strAsin);
+		
+		//отправка сообщения в телеграм всем пользователям в списке
+		project.SendInfoToLog("Отправляем уведомление в тедеграм.", true);
+		
+		strMessage = String.Format("АСИН {0}. Количество АСИНов изменено.", strAsin);
+		
+		for(int x=0; x<lstTelegramUserID.Count; x++){
+			string strChatID = lstTelegramUserID[x];
+			strChatID = Regex.Match(strChatID, @"(?<==)[\w\W]*").Value;
+			project.SendInfoToLog(strChatID, true);
+			
+			strFormat = String.Format("https://api.telegram.org/bot672782801:AAHeCwAAz93icLXzmvBu6X-80JDARGRdMKY/sendMessage?chat_id={0}&text={1}", strChatID, strMessage);
+			string strNotifucation = ZennoPoster.HttpGet(strFormat, "", "UTF-8", ZennoLab.InterfacesLibrary.Enums.Http.ResponceType.BodyOnly, 30000,"");
+		}
+	}
+}

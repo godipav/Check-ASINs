@@ -1,0 +1,42 @@
+string strProfilePath = project.Directory + @"\Вспомогательные файлы\amazon_profile.zpprofile";
+
+
+Tab Tab1 = instance.ActiveTab;
+
+//загружаем профиль
+if (File.Exists(strProfilePath)){
+	project.Profile.Load(strProfilePath);
+}
+else{
+	Tab1.Navigate("https://sellercentral.amazon.com/listing");
+	Tab1.WaitDownloading();
+	Thread.Sleep(500);
+	Thread.Sleep(200000);
+	project.Profile.Save(strProfilePath);
+}
+
+Tab1.Navigate("https://sellercentral.amazon.com/listing");
+Tab1.WaitDownloading();
+Thread.Sleep(500);
+
+//выбираем тип файла для загрузки
+HtmlElement elSelectType = Tab1.FindElementByXPath("//span[@class='a-dropdown-prompt']", 1);
+elSelectType.Click();
+
+HtmlElement elInventoryFiles = Tab1.FindElementByXPath("//a[contains(@id,'dropdown') and contains(text(),'Inventory')]", 0);
+elInventoryFiles.Click();
+
+//выбираем файл для загрузки
+instance.SetFileUploadPolicy("ok", "");
+string strFlatFilePatch = @"d:\ZennoPoster\Шаблоны\Bounty\BountyChanges.xlsx";
+instance.SetFilesForUpload(strFlatFilePatch);
+instance.ActiveTab.FindElementByAttribute("input:file","name","feed","text",1).RiseEvent("click","full");
+
+//прописываем email
+HtmlElement elInput = Tab1.FindElementByXPath("//input[@name='email']", 1);
+elInput.SetValue("111", "Full");
+
+
+////нажимаем кнопку "загрузить"
+//HtmlElement elUploadutton = Tab1.FindElementByXPath("//input[@name='upload-submit-button']", 0);
+//elUploadutton.Click();
