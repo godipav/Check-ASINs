@@ -1,0 +1,70 @@
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head>
+    <meta charset="utf-8">
+    <title> Editor </title>
+    <link href="https://fonts.googleapis.com/css?family=Oswald%7CPT+Sans%7CPlay%7CRoboto+Condensed%7CUbuntu&amp;subset=cyrillic" rel="stylesheet">
+    <link rel="stylesheet" href="file:///C:/Program%20Files%20(x86)/ZennoLab/RU/ZennoPoster%20Pro/5.17.1.0/Progs/HtmlEditorContent/bootstrap.3.3.7/content/Content/bootstrap.min.css">
+    <link rel="stylesheet" href="file:///C:/Program%20Files%20(x86)/ZennoLab/RU/ZennoPoster%20Pro/5.17.1.0/Progs/HtmlEditorContent/Select2.js.4.0.3/content/Content/css/select2.min.css">
+    <link rel="stylesheet" href="file:///C:/Program%20Files%20(x86)/ZennoLab/RU/ZennoPoster%20Pro/5.17.1.0/Progs/HtmlEditorContent/AdminLTE.2.3.3/content/admin-lte/css/AdminLTE.min.css">
+    <script src="file:///C:/Program%20Files%20(x86)/ZennoLab/RU/ZennoPoster%20Pro/5.17.1.0/Progs/HtmlEditorContent/jQuery.3.1.1/Content/Scripts/jquery-3.1.1.min.js"></script>
+    <script src="file:///C:/Program%20Files%20(x86)/ZennoLab/RU/ZennoPoster%20Pro/5.17.1.0/Progs/HtmlEditorContent/bootstrap.3.3.7/content/Scripts/bootstrap.min.js"></script>
+    <script src="file:///C:/Program%20Files%20(x86)/ZennoLab/RU/ZennoPoster%20Pro/5.17.1.0/Progs/HtmlEditorContent/Select2.js.4.0.3/content/Scripts/select2.js"></script>
+    <script src="file:///C:/Program%20Files%20(x86)/ZennoLab/RU/ZennoPoster%20Pro/5.17.1.0/Progs/HtmlEditorContent/AdminLTE.2.3.3/content/admin-lte/js/app.min.js"></script>
+    <script src="file:///C:/Program%20Files%20(x86)/ZennoLab/RU/ZennoPoster%20Pro/5.17.1.0/Progs/HtmlEditorContent/fastclick.js.1.0.6/content/Scripts/fastclick.js"></script>
+    <script src="file:///C:/Program%20Files%20(x86)/ZennoLab/RU/ZennoPoster%20Pro/5.17.1.0/Progs/HtmlEditorContent/JSBotUI/Content/Scripts/BotUiApi.js"></script>
+    <!-- This style for BotUI constructor only. Don't edit it! -->
+    <!-- This block should be last in the Head. Don't add any strings after this block! -->
+    <style id="style">
+html, body {
+    width: 100 %;
+    height: 100 %;
+    margin: 0;
+    padding: 0;
+}
+div.fixed {
+    position: absolute; 
+}
+div.absolute {
+    cursor: pointer;
+    position: absolute;
+} 
+label.option {
+    white-space: nowrap; 
+    overflow: hidden;
+}
+body {
+    font-family: 'Play';
+    background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+}
+html { 
+    margin-left: calc(100vw - 100%); 
+}
+select:-moz-focusring { color: transparent; text-shadow: 0 0 0 #000; }            
+option:-moz-focusring { color: transparent; text-shadow: 0 0 0 #000; }
+b, li, ul, text, span, div.radio, label, input, h1, select, button, div.ignore, div.tab-content, div.tab-pane, option, textarea {
+    margin: 0px;
+    padding: 0px;
+}
+</style>
+<script type="text/javascript">
+    jQuery(document).ready(function(){
+        $("input[type=checkbox],input[type=radio],option,select").hover(function() {
+            $(this).css('cursor','pointer');
+        });
+        jQuery("input[type=checkbox],input[type=radio]").focus(
+            function(){
+            this.blur();
+        });
+        jQuery("select[multiple]").focus(
+            function(){
+            this.blur();
+        });
+    });
+</script></head>
+<body class="skin-purple" id="body" active_language="Russian">
+
+<div anchorleft="1" anchortop="1" anchorright="0" anchorbot="0" min_width="20" min_height="15" valuable="" default_value="Собираем инфу об АСИНе" class="fixed form-group" style="top: 75px; left: 40px; Width: 235px; Height: 40px" type="combobox" id="1" variable_name="cfg_select">
+	<select class="form-control" style="width: 235px; height: 40px">
+		<option value="Собираем инфу об АСИНе">Собираем инфу об АСИНе</option>
+		<option value="Мониторим изменения">Мониторим изменения</option>
+		</select>
+</div></body></html>
